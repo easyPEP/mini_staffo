@@ -1,0 +1,140 @@
+{
+  "app": {
+    "name": "MiniStaffomatic"
+  },
+  "nav": {
+    "schedules": "Schedules",
+    "shifts": "Shifts",
+    "applications": "Applications",
+    "users": "Users",
+    "account": "Account",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": "Log in",
+    "logout": "Log out",
+    "email": "Email",
+    "password": "Password",
+    "subdomain": "Subdomain",
+    "invalidCredentials": "Invalid credentials"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "edit": "Edit",
+    "back": "Back",
+    "create": "Create",
+    "saving": "Saving...",
+    "publish": "Publish",
+    "publishing": "Publishing...",
+    "apply": "Apply",
+    "applying": "Applying...",
+    "assign": "Assign",
+    "assigning": "Assigning...",
+    "accept": "Accept",
+    "accepting": "Accepting...",
+    "revoke": "Revoke",
+    "revoking": "Revoking..."
+  },
+  "states": {
+    "draft": "Draft",
+    "published": "Published",
+    "new": "New",
+    "applied": "Applied",
+    "assigned": "Assigned",
+    "cancelled": "Cancelled"
+  },
+  "roles": {
+    "staff": "Staff",
+    "manager": "Manager",
+    "admin": "Admin"
+  },
+  "account": {
+    "title": "Account",
+    "name": "Name",
+    "subdomain": "Subdomain",
+    "locale": "Locale",
+    "timeZone": "Time Zone",
+    "updated": "Account updated."
+  },
+  "user": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "role": "Role",
+    "lockedAt": "Locked",
+    "createdAt": "Created",
+    "name": "Name",
+    "updated": "User updated.",
+    "locked": "Locked",
+    "active": "Active"
+  },
+  "profile": {
+    "title": "Profile",
+    "updated": "Profile updated."
+  },
+  "schedule": {
+    "name": "Name",
+    "namePlaceholder": "Enter schedule name...",
+    "bop": "Start Date",
+    "eop": "End Date",
+    "state": "State",
+    "publishedAt": "Published At",
+    "createdAt": "Created",
+    "create": "Create Schedule",
+    "edit": "Edit Schedule",
+    "created": "Schedule created.",
+    "updated": "Schedule updated.",
+    "published": "Schedule published.",
+    "deleted": "Schedule deleted.",
+    "deleteConfirmTitle": "Delete Schedule",
+    "deleteConfirmDescription": "Are you sure you want to delete this schedule? This action cannot be undone.",
+    "shifts": "Shifts"
+  },
+  "shift": {
+    "startsAt": "Starts At",
+    "endsAt": "Ends At",
+    "desiredCoverage": "Desired Coverage",
+    "note": "Note",
+    "notePlaceholder": "Enter note...",
+    "createdAt": "Created",
+    "schedule": "Schedule",
+    "coverage": "Coverage",
+    "applications": "Applications",
+    "create": "Create Shift",
+    "edit": "Edit Shift",
+    "created": "Shift created.",
+    "updated": "Shift updated.",
+    "applied": "Applied to shift.",
+    "deleted": "Shift deleted.",
+    "deleteConfirmTitle": "Delete Shift",
+    "deleteConfirmDescription": "Are you sure you want to delete this shift? This action cannot be undone."
+  },
+  "application": {
+    "state": "State",
+    "cancelReason": "Cancel Reason",
+    "createdAt": "Created",
+    "shift": "Shift",
+    "user": "User",
+    "schedule": "Schedule",
+    "create": "Create Application",
+    "updated": "Application updated.",
+    "created": "Application created.",
+    "deleted": "Application deleted.",
+    "deleteConfirmTitle": "Delete Application",
+    "deleteConfirmDescription": "Are you sure you want to delete this application? This action cannot be undone.",
+    "enterCancelReason": "Enter cancel reason...",
+    "selectUser": "Select a user..."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "noResults": "No results.",
+    "notAuthorized": "You are not authorized to view this page."
+  },
+  "language": {
+    "title": "Language"
+  }
+}

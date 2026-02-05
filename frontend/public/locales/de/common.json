@@ -1,0 +1,140 @@
+{
+  "app": {
+    "name": "MiniStaffomatic"
+  },
+  "nav": {
+    "schedules": "Dienstpläne",
+    "shifts": "Schichten",
+    "applications": "Bewerbungen",
+    "users": "Benutzer",
+    "account": "Konto",
+    "profile": "Profil"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "subdomain": "Subdomain",
+    "invalidCredentials": "Ungültige Anmeldedaten"
+  },
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleting": "Löschen...",
+    "edit": "Bearbeiten",
+    "back": "Zurück",
+    "create": "Erstellen",
+    "saving": "Speichern...",
+    "publish": "Veröffentlichen",
+    "publishing": "Veröffentlichen...",
+    "apply": "Bewerben",
+    "applying": "Bewerben...",
+    "assign": "Zuweisen",
+    "assigning": "Zuweisen...",
+    "accept": "Annehmen",
+    "accepting": "Annehmen...",
+    "revoke": "Widerrufen",
+    "revoking": "Widerrufen..."
+  },
+  "states": {
+    "draft": "Entwurf",
+    "published": "Veröffentlicht",
+    "new": "Neu",
+    "applied": "Beworben",
+    "assigned": "Zugewiesen",
+    "cancelled": "Storniert"
+  },
+  "roles": {
+    "staff": "Mitarbeiter",
+    "manager": "Manager",
+    "admin": "Admin"
+  },
+  "account": {
+    "title": "Konto",
+    "name": "Name",
+    "subdomain": "Subdomain",
+    "locale": "Sprache",
+    "timeZone": "Zeitzone",
+    "updated": "Konto aktualisiert."
+  },
+  "user": {
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "role": "Rolle",
+    "lockedAt": "Gesperrt",
+    "createdAt": "Erstellt",
+    "name": "Name",
+    "updated": "Benutzer aktualisiert.",
+    "locked": "Gesperrt",
+    "active": "Aktiv"
+  },
+  "profile": {
+    "title": "Profil",
+    "updated": "Profil aktualisiert."
+  },
+  "schedule": {
+    "name": "Name",
+    "namePlaceholder": "Dienstplanname eingeben...",
+    "bop": "Startdatum",
+    "eop": "Enddatum",
+    "state": "Status",
+    "publishedAt": "Veröffentlicht am",
+    "createdAt": "Erstellt",
+    "create": "Dienstplan erstellen",
+    "edit": "Dienstplan bearbeiten",
+    "created": "Dienstplan erstellt.",
+    "updated": "Dienstplan aktualisiert.",
+    "published": "Dienstplan veröffentlicht.",
+    "deleted": "Dienstplan gelöscht.",
+    "deleteConfirmTitle": "Dienstplan löschen",
+    "deleteConfirmDescription": "Sind Sie sicher, dass Sie diesen Dienstplan löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "shifts": "Schichten"
+  },
+  "shift": {
+    "startsAt": "Beginnt um",
+    "endsAt": "Endet um",
+    "desiredCoverage": "Gewünschte Besetzung",
+    "note": "Notiz",
+    "notePlaceholder": "Notiz eingeben...",
+    "createdAt": "Erstellt",
+    "schedule": "Dienstplan",
+    "coverage": "Besetzung",
+    "applications": "Bewerbungen",
+    "create": "Schicht erstellen",
+    "edit": "Schicht bearbeiten",
+    "created": "Schicht erstellt.",
+    "updated": "Schicht aktualisiert.",
+    "applied": "Auf Schicht beworben.",
+    "deleted": "Schicht gelöscht.",
+    "deleteConfirmTitle": "Schicht löschen",
+    "deleteConfirmDescription": "Sind Sie sicher, dass Sie diese Schicht löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+  "application": {
+    "state": "Status",
+    "cancelReason": "Stornierungsgrund",
+    "createdAt": "Erstellt",
+    "shift": "Schicht",
+    "user": "Benutzer",
+    "schedule": "Dienstplan",
+    "create": "Bewerbung erstellen",
+    "updated": "Bewerbung aktualisiert.",
+    "created": "Bewerbung erstellt.",
+    "deleted": "Bewerbung gelöscht.",
+    "deleteConfirmTitle": "Bewerbung löschen",
+    "deleteConfirmDescription": "Sind Sie sicher, dass Sie diese Bewerbung löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "enterCancelReason": "Stornierungsgrund eingeben...",
+    "selectUser": "Benutzer auswählen..."
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Etwas ist schiefgelaufen.",
+    "noResults": "Keine Ergebnisse.",
+    "notAuthorized": "Sie sind nicht berechtigt, diese Seite anzuzeigen."
+  },
+  "language": {
+    "title": "Sprache"
+  }
+}

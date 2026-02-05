@@ -1,0 +1,35 @@
+inherit_from: .rubocop_todo.yml
+
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  Exclude:
+    - bin/rails
+    - bin/rake
+    - bin/rspec
+    - bin/setup
+    - config/boot.rb
+    - config/environment.rb
+    - db/schema.rb
+    - db/migrate/*
+    - doc/**/*
+    - tmp/**/*
+    - vendor/**/*
+  NewCops: enable
+
+Bundler/OrderedGems:
+  Enabled: false
+
+RSpec/EmptyExampleGroup:
+  Exclude:
+    - spec/requests/**/*
+
+RSpec/MultipleMemoizedHelpers:
+  Exclude:
+    - spec/requests/**/*
+
+RSpec/VariableName:
+  Exclude:
+    - spec/requests/**/*

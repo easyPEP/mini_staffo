@@ -1,0 +1,19 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "") %>
+  host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+
+development:
+  <<: *default
+  database: mini_staffomatic_development
+
+test:
+  <<: *default
+  database: mini_staffomatic_test
+
+production:
+  <<: *default
+  database: mini_staffomatic_production

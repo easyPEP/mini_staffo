@@ -1,0 +1,42 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+# Core
+gem 'rails', '~> 7.2.3'
+gem 'mysql2', '~> 0.5'
+gem 'puma', '>= 5.0'
+
+# Auth
+gem 'devise'
+gem 'cancancan'
+
+# JSON:API
+gem 'jsonapi-serializer'
+gem 'jsonapi.rb'
+
+# Models
+gem 'aasm'
+gem 'ransack'
+gem 'kaminari'
+
+# Redis
+gem 'redis'
+
+# Misc
+gem 'tzinfo-data', platforms: %i[windows jruby]
+gem 'bootsnap', require: false
+gem 'rack-cors'
+
+group :development, :test do
+  gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'shoulda-matchers'
+  gem 'rswag-specs'
+  gem 'pry-rails'
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+end
