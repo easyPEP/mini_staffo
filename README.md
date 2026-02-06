@@ -2,14 +2,73 @@
 
 A simplified staff scheduling application. Managers create weekly schedules and shifts, staff members apply for shifts, and managers assign them.
 
+## Table of Contents
+
+- [Interview Options](#interview-options)
+  - [Option 1: Pair Programming Session](#option-1-pair-programming-session)
+  - [Option 2: Code Challenge](#option-2-code-challenge)
+- [Core Business Models](#core-business-models)
+- [Getting Started](#getting-started)
+- [Where to Go Next](#where-to-go-next)
+
+---
+
 This repository contains two independent services:
 
 | Service      | Tech                                 | Directory   |
-|--------------|--------------------------------------|-------------|
+| ------------ | ------------------------------------ | ----------- |
 | **API**      | Ruby on Rails 7 (API-only, JSON:API) | `api/`      |
 | **Frontend** | React 19, TypeScript, Vite, TanStack | `frontend/` |
 
 Both services run in Docker containers.
+
+## Interview Options
+
+### Option 1: Pair Programming Session
+
+If you're here for a pair programming session, your interviewer will guide you through the codebase and the task. No additional setup is required beforehand — just make sure you have Docker installed and the services running (see [Getting Started](#getting-started)).
+
+### Option 2: Code Challenge
+
+If you're completing the code challenge independently, follow the steps below.
+
+#### Steps to Complete
+
+1. **Create your own repository** (do not fork this one)
+
+   Create a new private repository on GitHub, then mirror this repo:
+
+   ```bash
+   git clone --bare git@github.com:staffomatic/mini_staffomatic.git
+   cd mini_staffomatic.git
+   git push --mirror git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git
+   cd ..
+   rm -rf mini_staffomatic.git
+   ```
+
+   Then clone your new repository:
+
+   ```bash
+   git clone git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git
+   cd YOUR_REPO_NAME
+   ```
+
+2. **Get the app running** — follow the [Getting Started](#getting-started) section below
+
+3. **Read the task** — your recruiter will share the task details with you
+
+4. **Implement your solution** — create a new branch and make your changes
+
+#### Submit Your Work
+
+1. Create a pull request from your feature branch to `main` in your repository
+2. Invite the following GitHub users as collaborators so we can review:
+   - `@martingregoire`
+   - `@fluxsaas`
+
+3. Send the PR link to your recruiter
+
+---
 
 ## Core Business Models
 
@@ -49,7 +108,7 @@ A staff member's request to work a shift. Follows a state machine: **new** → *
 
 ## Getting Started
 
-Both services require **Docker and Docker Compose**. Each has its own setup script.
+Both services require **Docker and Docker Compose**. Each has its own setup script. Make sure to start the API first, as the frontend depends on it.
 
 ### 1. Start the API
 
