@@ -108,7 +108,7 @@ A staff member's request to work a shift. Follows a state machine: **new** → *
 
 ## Getting Started
 
-Both services require **Docker and Docker Compose**. Each has its own setup script.
+Both services require **Docker and Docker Compose**. Each has its own setup script. Make sure to start the API first, as the frontend depends on it.
 
 ### 1. Start the API
 
