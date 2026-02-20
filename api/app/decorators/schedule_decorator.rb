@@ -7,8 +7,4 @@ class ScheduleDecorator < BaseDecorator
     object.account_id = account.id
     object.creator_id ||= actor.id
   end
-
-  def publish!
-    object.aasm_publish!
-  end
 end

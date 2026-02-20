@@ -14,24 +14,4 @@ class ApplicationDecorator < BaseDecorator
     object.account_id = account.id
     object.creator_id ||= actor.id
   end
-
-  def apply!
-    object.aasm_apply!
-  end
-
-  def assign!
-    object.aasm_assign!
-  end
-
-  def accept!
-    object.aasm_accept!
-  end
-
-  def cancel!
-    object.aasm_cancel!
-  end
-
-  def revoke!
-    object.aasm_revoke!
-  end
 end

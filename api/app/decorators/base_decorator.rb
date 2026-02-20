@@ -49,6 +49,6 @@ class BaseDecorator
   def update_state
     return if @state_action.blank?
 
-    send("#{@state_action}!")
+    object.send("aasm_#{@state_action}!")
   end
 end
