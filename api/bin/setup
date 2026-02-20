@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "== Building Docker images =="
-docker compose build
+echo "=== Building Docker images..."
+docker compose build api
 
-echo "== Installing dependencies =="
+echo "=== Installing dependencies..."
 docker compose run --rm api bundle install
 
-echo "== Preparing database =="
+echo "=== Preparing database..."
 docker compose run --rm api bundle exec rails db:prepare
 
-echo "== Seeding database =="
+echo "=== Seeding database..."
 docker compose run --rm api bundle exec rails db:seed
 
-echo "== Setup complete! Run 'bin/dev up' to start the app =="
+echo "=== Generating OpenAPI schema..."
+docker compose run --rm api bundle exec rails rswag
+
+echo "=== Setup complete! Run 'bin/dev up' to start the app."

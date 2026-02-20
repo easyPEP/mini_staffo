@@ -2,6 +2,15 @@
 
 A simplified staff scheduling application. Managers create weekly schedules and shifts, staff members apply for shifts, and managers assign them.
 
+## TL;DR
+
+```bash
+bin/setup    # build containers, install deps, seed DB
+bin/dev up   # start everything → API :3000, Frontend :5173, Docs :8080
+```
+
+Login at http://localhost:5173 — subdomain `demo`, email `admin@demo.com`, password `password`.
+
 ## Table of Contents
 
 - [Interview Options](#interview-options)

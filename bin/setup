@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+echo "== Setting up API =="
+"$ROOT_DIR/api/bin/setup"
+
+echo "== Setting up Frontend =="
+"$ROOT_DIR/frontend/bin/setup"
+
+echo "== All done! Run 'bin/dev up' to start everything =="
