@@ -5,8 +5,10 @@ A simplified staff scheduling application. Managers create weekly schedules and 
 ## TL;DR
 
 ```bash
-bin/setup    # build containers, install deps, seed DB
-bin/dev up   # start everything → API :3000, Frontend :5173, Docs :8080
+bin/setup          # build containers, install deps, seed DB
+bin/dev up         # start everything → API :3000, Frontend :5173, Docs :8080
+bin/generate-api   # regenerate OpenAPI schema + frontend client
+bin/check          # rubocop + eslint + typecheck + rspec + vitest
 ```
 
 Login at http://localhost:5173 — subdomain `demo`, email `admin@demo.com`, password `password`.

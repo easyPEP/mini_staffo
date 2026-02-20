@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Runs all linters and tests in parallel (rubocop, rspec, eslint, typecheck, vitest).
+# Requires containers to be running (bin/dev up).
+set -euo pipefail
+
+tmpdir=$(mktemp -d)
+cleanup() { printf '\033[?25h'; rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+interactive=false
+[ -t 1 ] && interactive=true
+
+# Portable arrays — works with bash 3.2+
+task_names=("Rubocop" "RSpec" "ESLint" "TypeScript" "Vitest")
+task_cmds=(
+  "docker compose exec -T api bundle exec rubocop"
+  "docker compose exec -T api bundle exec rspec"
+  "docker compose exec -T frontend pnpm lint"
+  "docker compose exec -T frontend pnpm typecheck"
+  "docker compose exec -T frontend pnpm test"
+)
+task_pids=()
+task_results=()
+
+for i in "${!task_names[@]}"; do
+  ${task_cmds[$i]} > "$tmpdir/${task_names[$i]}" 2>&1 &
+  task_pids+=($!)
+  task_results+=("")
+done
+
+if $interactive; then
+  spinner='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+
+  printf '\033[?25l' # hide cursor
+
+  # Reserve lines
+  for name in "${task_names[@]}"; do
+    echo "  $name"
+  done
+
+  frame=0
+  while true; do
+    all_done=true
+    for i in "${!task_pids[@]}"; do
+      if [ -z "${task_results[$i]}" ] && ! kill -0 "${task_pids[$i]}" 2>/dev/null; then
+        if wait "${task_pids[$i]}" 2>/dev/null; then
+          task_results[$i]=pass
+        else
+          task_results[$i]=fail
+        fi
+      fi
+      [ -z "${task_results[$i]}" ] && all_done=false
+    done
+
+    # Redraw
+    printf '\033[%dA' "${#task_names[@]}"
+    local_char=${spinner:frame%${#spinner}:1}
+    for i in "${!task_names[@]}"; do
+      case "${task_results[$i]}" in
+        pass) printf '\033[2K  \033[32m✓\033[0m %s\n' "${task_names[$i]}" ;;
+        fail) printf '\033[2K  \033[31m✗\033[0m %s\n' "${task_names[$i]}" ;;
+        *)    printf '\033[2K  %s %s\n' "$local_char" "${task_names[$i]}" ;;
+      esac
+    done
+
+    $all_done && break
+    frame=$((frame + 1))
+    sleep 0.08
+  done
+else
+  # Simple fallback for non-TTY (piped, CI, etc.)
+  for i in "${!task_pids[@]}"; do
+    if wait "${task_pids[$i]}" 2>/dev/null; then
+      task_results[$i]=pass
+      echo "OK ${task_names[$i]}"
+    else
+      task_results[$i]=fail
+      echo "FAIL ${task_names[$i]}"
+    fi
+  done
+fi
+
+# Print output for failures
+exit_code=0
+for i in "${!task_names[@]}"; do
+  if [ "${task_results[$i]}" = "fail" ]; then
+    echo
+    echo "── ${task_names[$i]} ──"
+    cat "$tmpdir/${task_names[$i]}"
+    exit_code=1
+  fi
+done
+
+exit "$exit_code"
