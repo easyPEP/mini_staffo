@@ -4,7 +4,7 @@ module SwaggerComponent
   module Resources
     module Application
       ATTRIBUTES = {
-        state: { type: :string, enum: %w[new applied assigned cancelled], read_only: true },
+        state: { type: :string, enum: SwaggerComponent.aasm_state_names(::Application), read_only: true },
         cancel_reason: { type: :string, nullable: true },
         created_at: { type: :string, format: 'date-time', read_only: true },
         updated_at: { type: :string, format: 'date-time', read_only: true }

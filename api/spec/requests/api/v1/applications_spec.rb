@@ -106,7 +106,7 @@ RSpec.describe 'Applications API', type: :request do
       SwaggerComponent::RequestSetup.build(self)
       parameter name: :body, in: :body, schema: { '$ref': '#/components/schemas/application_post_resource' }
       parameter name: :do, in: :query, required: false,
-                schema: { type: :string, enum: %w[apply assign accept cancel revoke] },
+                schema: { type: :string, enum: SwaggerComponent.aasm_event_names(Application) },
                 description: 'State transition action'
 
       response '200', 'application updated' do
