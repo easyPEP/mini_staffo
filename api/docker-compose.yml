@@ -4,8 +4,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: mini_staffomatic_development
-    ports:
-      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -16,8 +14,6 @@ services:
 
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
 
   api:
     build:
@@ -41,7 +37,7 @@ services:
   docs:
     image: redocly/redoc
     ports:
-      - "8080:80"
+      - "8888:80"
     environment:
       SPEC_URL: /openapi.json
     volumes:
