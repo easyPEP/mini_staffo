@@ -7,7 +7,7 @@ module SwaggerComponent
         name: { type: :string, nullable: true },
         bop: { type: :string, format: :date },
         eop: { type: :string, format: :date, read_only: true },
-        state: { type: :string, enum: %w[draft published], read_only: true },
+        state: { type: :string, enum: SwaggerComponent.aasm_state_names(::Schedule), read_only: true },
         published_at: { type: :string, format: 'date-time', nullable: true, read_only: true },
         created_at: { type: :string, format: 'date-time', read_only: true },
         updated_at: { type: :string, format: 'date-time', read_only: true }
