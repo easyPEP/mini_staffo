@@ -2,6 +2,17 @@
 
 A simplified staff scheduling application. Managers create weekly schedules and shifts, staff members apply for shifts, and managers assign them.
 
+## TL;DR
+
+```bash
+bin/setup          # build containers, install deps, seed DB
+bin/dev up         # start everything → API :3000, Frontend :5173, Docs :8888
+bin/generate-api   # regenerate OpenAPI schema + frontend client
+bin/check          # rubocop + eslint + typecheck + rspec + vitest
+```
+
+Login at http://localhost:5173 — subdomain `demo`, email `admin@demo.com`, password `password`.
+
 ## Table of Contents
 
 - [Interview Options](#interview-options)
@@ -118,7 +129,7 @@ bin/setup
 bin/dev up
 ```
 
-This starts the Rails API on **http://localhost:3000** and Swagger UI on **http://localhost:8080**.
+This starts the Rails API on **http://localhost:3000** and Swagger UI on **http://localhost:8888**.
 
 The database is seeded with a `demo` account, four users, a published schedule with daily shifts, and some sample applications.
 
@@ -142,4 +153,4 @@ This starts the React app on **http://localhost:5173**.
 
 - **[api/README.md](api/README.md)** — API architecture, patterns (CommonController, Decorators, AASM), URL structure, curl examples, and dev commands (rspec, rubocop, rails console).
 - **[frontend/README.md](frontend/README.md)** — Frontend tech stack, project structure, and dev commands (typecheck, lint, test).
-- **[api/public/v1/openapi.json](api/public/v1/openapi.json)** — OpenAPI spec (also available via Swagger UI at http://localhost:8080 when running).
+- **[api/public/v1/openapi.json](api/public/v1/openapi.json)** — OpenAPI spec (also available via Swagger UI at http://localhost:8888 when running).

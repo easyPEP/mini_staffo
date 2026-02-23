@@ -8,8 +8,9 @@ services:
       - '5173:5173'
     volumes:
       - .:/app
+      - ../api/public/v1/openapi.json:/openapi.json:ro
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     environment:
       - NODE_ENV=development
-      - OPENAPI_URL=http://host.docker.internal:3000/v1/openapi.json
+      - OPENAPI_URL=/openapi.json

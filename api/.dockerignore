@@ -40,3 +40,17 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+/docker-compose.yml
+
+# Ignore editor and tooling files
+/.claude/
+/.ruby-lsp/
+/.gitattributes
+/mise.toml
+*.md
+
+# Ignore test and lint config
+/.rspec
+/.rubocop.yml
+/.rubocop_todo.yml
+/spec/

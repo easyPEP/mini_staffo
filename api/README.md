@@ -14,7 +14,7 @@ bin/dev up
 ```
 
 - API: http://localhost:3000
-- Docs: http://localhost:8080
+- Docs: http://localhost:8888
 
 ## Architecture
 
@@ -84,6 +84,6 @@ bin/dev exec api bundle exec rails console
 # Reset database
 bin/dev exec api bundle exec rails db:reset
 
-# Regenerate Swagger (view at http://localhost:8080)
+# Regenerate Swagger (view at http://localhost:8888)
 bin/dev exec api bundle exec rails rswag
 ```

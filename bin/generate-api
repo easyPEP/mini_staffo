@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "== Generating OpenAPI schema =="
+docker compose exec api bundle exec rails rswag
+
+echo "== Generating frontend API client =="
+docker compose exec frontend pnpm generate-api
+
+echo "== Done =="
