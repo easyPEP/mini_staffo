@@ -12,6 +12,10 @@ module SwaggerComponent
                 type: :array,
                 items: { '$ref': "#/components/schemas/#{resource_name}_item" }
               },
+              included: {
+                type: :array,
+                items: { '$ref': '#/components/schemas/jsonapi_included_item' }
+              },
               meta: { '$ref': '#/components/schemas/jsonapi_meta' }
             }
           }

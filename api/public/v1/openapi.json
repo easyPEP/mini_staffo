@@ -27,6 +27,17 @@
             "BasicAuth": []
           }
         ],
+        "parameters": [
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Include related resources in the response ([JSON:API includes](https://jsonapi.org/format/#fetching-includes)).<br><br>**Available relationships:**<br>`users`, `schedules`"
+          }
+        ],
         "responses": {
           "200": {
             "description": "account found",
@@ -113,6 +124,24 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "filter[{attribute}_{predicate}]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by attribute using Ransack predicates.<br><br>**Available attributes:**<br>`shift_id`, `user_id`, `schedule_id`, `creator_id`, `state`, `cancel_reason`, `created_at`, `updated_at`<br><br>**Common predicates:**<br>`eq`, `not_eq`, `matches`, `lt`, `lteq`, `gt`, `gteq`, `in`, `not_in`, `cont`, `start`, `end`, `null`, `not_null`<br><br>[Full list of predicates](https://activerecord-hackery.github.io/ransack/getting-started/using-predicates/)"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Include related resources in the response ([JSON:API includes](https://jsonapi.org/format/#fetching-includes)).<br><br>**Available relationships:**<br>`shift`, `user`, `schedule`, `creator`"
           }
         ],
         "responses": {
@@ -199,6 +228,17 @@
         "security": [
           {
             "BasicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Include related resources in the response ([JSON:API includes](https://jsonapi.org/format/#fetching-includes)).<br><br>**Available relationships:**<br>`shift`, `user`, `schedule`, `creator`"
           }
         ],
         "responses": {
@@ -320,6 +360,24 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "filter[{attribute}_{predicate}]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by attribute using Ransack predicates.<br><br>**Available attributes:**<br>`creator_id`, `name`, `bop`, `state`, `published_at`, `created_at`, `updated_at`<br><br>**Common predicates:**<br>`eq`, `not_eq`, `matches`, `lt`, `lteq`, `gt`, `gteq`, `in`, `not_in`, `cont`, `start`, `end`, `null`, `not_null`<br><br>[Full list of predicates](https://activerecord-hackery.github.io/ransack/getting-started/using-predicates/)"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Include related resources in the response ([JSON:API includes](https://jsonapi.org/format/#fetching-includes)).<br><br>**Available relationships:**<br>`creator`, `shifts`"
           }
         ],
         "responses": {
@@ -406,6 +464,17 @@
         "security": [
           {
             "BasicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Include related resources in the response ([JSON:API includes](https://jsonapi.org/format/#fetching-includes)).<br><br>**Available relationships:**<br>`creator`, `shifts`"
           }
         ],
         "responses": {
@@ -553,6 +622,24 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "filter[{attribute}_{predicate}]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by attribute using Ransack predicates.<br><br>**Available attributes:**<br>`schedule_id`, `creator_id`, `starts_at`, `ends_at`, `desired_coverage`, `note`, `published_at`, `created_at`, `updated_at`<br><br>**Common predicates:**<br>`eq`, `not_eq`, `matches`, `lt`, `lteq`, `gt`, `gteq`, `in`, `not_in`, `cont`, `start`, `end`, `null`, `not_null`<br><br>[Full list of predicates](https://activerecord-hackery.github.io/ransack/getting-started/using-predicates/)"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Include related resources in the response ([JSON:API includes](https://jsonapi.org/format/#fetching-includes)).<br><br>**Available relationships:**<br>`schedule`, `creator`, `applications`"
           }
         ],
         "responses": {
@@ -639,6 +726,17 @@
         "security": [
           {
             "BasicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Include related resources in the response ([JSON:API includes](https://jsonapi.org/format/#fetching-includes)).<br><br>**Available relationships:**<br>`schedule`, `creator`, `applications`"
           }
         ],
         "responses": {
@@ -743,6 +841,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "filter[{attribute}_{predicate}]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by attribute using Ransack predicates.<br><br>**Available attributes:**<br>`email`, `first_name`, `last_name`, `role`, `locked_at`, `created_at`, `updated_at`<br><br>**Common predicates:**<br>`eq`, `not_eq`, `matches`, `lt`, `lteq`, `gt`, `gteq`, `in`, `not_in`, `cont`, `start`, `end`, `null`, `not_null`<br><br>[Full list of predicates](https://activerecord-hackery.github.io/ransack/getting-started/using-predicates/)"
           }
         ],
         "responses": {
@@ -975,6 +1082,25 @@
           }
         }
       },
+      "jsonapi_included_item": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "relationships": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
       "jsonapi_relationship": {
         "type": "object",
         "properties": {
@@ -1015,6 +1141,12 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/account_item"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
+            }
           }
         }
       },
@@ -1109,6 +1241,12 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/user_item"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
+            }
           }
         }
       },
@@ -1178,6 +1316,12 @@
               "$ref": "#/components/schemas/user_item"
             }
           },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
+            }
+          },
           "meta": {
             "$ref": "#/components/schemas/jsonapi_meta"
           }
@@ -1231,6 +1375,12 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/schedule_item"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
+            }
           }
         }
       },
@@ -1308,6 +1458,12 @@
               "$ref": "#/components/schemas/schedule_item"
             }
           },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
+            }
+          },
           "meta": {
             "$ref": "#/components/schemas/jsonapi_meta"
           }
@@ -1350,6 +1506,12 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/shift_item"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
+            }
           }
         }
       },
@@ -1419,6 +1581,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/shift_item"
+            }
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
             }
           },
           "meta": {
@@ -1500,6 +1668,12 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/application_item"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
+            }
           }
         }
       },
@@ -1570,6 +1744,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/application_item"
+            }
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_item"
             }
           },
           "meta": {

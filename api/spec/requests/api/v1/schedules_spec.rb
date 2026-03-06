@@ -15,6 +15,8 @@ RSpec.describe 'Schedules API', type: :request do
       tags 'Schedules'
       SwaggerComponent::RequestSetup.build(self)
       SwaggerComponent::Parameters::Pagination.apply(self)
+      SwaggerComponent::Parameters::Filtering.apply(self, attributes: Schedule.ransackable_attributes)
+      SwaggerComponent::Parameters::Including.apply(self, relationships: %w[creator shifts])
 
       response '200', 'schedules found' do
         schema '$ref': '#/components/schemas/schedule_resources'
@@ -84,6 +86,7 @@ RSpec.describe 'Schedules API', type: :request do
     get 'Shows a schedule' do
       tags 'Schedules'
       SwaggerComponent::RequestSetup.build(self)
+      SwaggerComponent::Parameters::Including.apply(self, relationships: %w[creator shifts])
 
       response '200', 'schedule found' do
         schema '$ref': '#/components/schemas/schedule_resource'

@@ -9,6 +9,15 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@phosphor-icons/react'
+import type {
+  GetApplicationsParams,
+  GetShiftsIdParams,
+  ScheduleItem,
+  UserItem,
+} from '@/generated/schemas'
+import * as Application from '@/domains/application'
+import * as JsonApi from '@/domains/json-api'
+import * as User from '@/domains/user'
 import {
   getGetShiftsIdQueryKey,
   getGetShiftsQueryKey,
@@ -47,21 +56,6 @@ export const Route = createFileRoute('/_authenticated/shifts/$shiftId')({
   component: ShiftDetailPage,
 })
 
-function stateBadgeVariant(
-  state?: string,
-): 'default' | 'secondary' | 'destructive' | 'outline' {
-  switch (state) {
-    case 'assigned':
-      return 'default'
-    case 'applied':
-      return 'outline'
-    case 'cancelled':
-      return 'destructive'
-    default:
-      return 'secondary'
-  }
-}
-
 function ShiftDetailPage() {
   const { t } = useTranslation()
   const { shiftId } = Route.useParams()
@@ -76,18 +70,31 @@ function ShiftDetailPage() {
   const [createApplicationDialogOpen, setCreateApplicationDialogOpen] =
     useState(false)
 
-  const { data, isLoading } = useGetShiftsId(shiftId)
+  const { data, isLoading } = useGetShiftsId(shiftId, {
+    include: 'schedule',
+  } as GetShiftsIdParams)
   const createApplication = usePostApplications()
   const deleteShift = useDeleteShiftsId()
 
-  const { data: applicationsData } = useGetApplications()
-  const shiftApplications = (applicationsData?.data ?? []).filter(
-    (a) => a.relationships?.shift?.data?.id === shiftId,
+  const { data: applicationsData } = useGetApplications({
+    'filter[shift_id_eq]': shiftId,
+    include: 'user',
+  } as GetApplicationsParams)
+  const shiftApplications = applicationsData?.data ?? []
+  const includedUsers = JsonApi.buildIncludedMap<UserItem>(
+    applicationsData?.included,
+    'user',
   )
 
   const shift = data?.data
   const attrs = shift?.attributes
   const scheduleId = shift?.relationships?.schedule?.data?.id
+  const includedSchedule = JsonApi.findIncluded<ScheduleItem>(
+    data?.included,
+    'schedule',
+    scheduleId,
+  )
+  const scheduleName = includedSchedule?.attributes?.name ?? scheduleId
 
   const assignedCount = shiftApplications.filter(
     (a) => a.attributes?.state === 'assigned',
@@ -219,7 +226,7 @@ function ShiftDetailPage() {
                   params={{ scheduleId }}
                   className="hover:underline"
                 >
-                  {scheduleId}
+                  {scheduleName}
                 </Link>
               ) : (
                 '-'
@@ -294,19 +301,26 @@ function ShiftDetailPage() {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <Link
-                      to="/users/$userId"
-                      params={{
-                        userId: app.relationships?.user?.data?.id ?? '',
-                      }}
-                      className="hover:underline"
-                    >
-                      {app.relationships?.user?.data?.id ?? '-'}
-                    </Link>
+                    {(() => {
+                      const userId = app.relationships?.user?.data?.id
+                      const user = userId ? includedUsers.get(userId) : undefined
+                      const name = user?.attributes
+                        ? User.fullName(user.attributes)
+                        : (userId ?? '-')
+                      return (
+                        <Link
+                          to="/users/$userId"
+                          params={{ userId: userId ?? '' }}
+                          className="hover:underline"
+                        >
+                          {name}
+                        </Link>
+                      )
+                    })()}
                   </TableCell>
                   <TableCell>
                     {app.attributes?.state ? (
-                      <Badge variant={stateBadgeVariant(app.attributes.state)}>
+                      <Badge variant={Application.stateBadgeVariant(app.attributes.state)}>
                         {t(`states.${app.attributes.state}`)}
                       </Badge>
                     ) : null}

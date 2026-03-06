@@ -18,6 +18,8 @@ RSpec.describe 'Applications API', type: :request do
       tags 'Applications'
       SwaggerComponent::RequestSetup.build(self)
       SwaggerComponent::Parameters::Pagination.apply(self)
+      SwaggerComponent::Parameters::Filtering.apply(self, attributes: Application.ransackable_attributes)
+      SwaggerComponent::Parameters::Including.apply(self, relationships: %w[shift user schedule creator])
 
       response '200', 'applications found' do
         schema '$ref': '#/components/schemas/application_resources'
@@ -90,6 +92,7 @@ RSpec.describe 'Applications API', type: :request do
     get 'Shows an application' do
       tags 'Applications'
       SwaggerComponent::RequestSetup.build(self)
+      SwaggerComponent::Parameters::Including.apply(self, relationships: %w[shift user schedule creator])
 
       response '200', 'application found' do
         schema '$ref': '#/components/schemas/application_resource'

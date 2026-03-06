@@ -20,7 +20,7 @@ function AccountPage() {
   const { t } = useTranslation()
   const { isAdmin } = useAuth()
 
-  const { data, isLoading } = useGetAccount({ query: { enabled: isAdmin } })
+  const { data, isLoading } = useGetAccount({}, { query: { enabled: isAdmin } })
   const patchAccount = usePatchAccount()
 
   const account = data?.data

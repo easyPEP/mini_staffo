@@ -16,11 +16,11 @@ class Shift < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[starts_at ends_at desired_coverage note published_at created_at updated_at]
+    %w[schedule_id creator_id starts_at ends_at desired_coverage note published_at created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[account schedule creator applications]
+    %w[schedule creator applications]
   end
 
   private

@@ -4,7 +4,15 @@ import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { ArrowLeftIcon, TrashIcon } from '@phosphor-icons/react'
+import type {
+  GetApplicationsIdParams,
+  ScheduleItem,
+  UserItem,
+} from '@/generated/schemas'
 import type { PatchApplicationsIdDo } from '@/generated/schemas/patchApplicationsIdDo'
+import * as Application from '@/domains/application'
+import * as JsonApi from '@/domains/json-api'
+import * as User from '@/domains/user'
 import {
   getGetApplicationsIdQueryKey,
   getGetApplicationsQueryKey,
@@ -33,21 +41,6 @@ export const Route = createFileRoute(
   component: ApplicationDetailPage,
 })
 
-function stateBadgeVariant(
-  state?: string,
-): 'default' | 'secondary' | 'destructive' | 'outline' {
-  switch (state) {
-    case 'assigned':
-      return 'default'
-    case 'applied':
-      return 'outline'
-    case 'cancelled':
-      return 'destructive'
-    default:
-      return 'secondary'
-  }
-}
-
 function ApplicationDetailPage() {
   const { t } = useTranslation()
   const { applicationId } = Route.useParams()
@@ -60,7 +53,9 @@ function ApplicationDetailPage() {
   const [cancelReason, setCancelReason] = useState('')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
-  const { data, isLoading } = useGetApplicationsId(applicationId)
+  const { data, isLoading } = useGetApplicationsId(applicationId, {
+    include: 'user,schedule',
+  } as GetApplicationsIdParams)
   const patchApplication = usePatchApplicationsId()
   const deleteApplication = useDeleteApplicationsId()
 
@@ -71,6 +66,22 @@ function ApplicationDetailPage() {
   const shiftId = application?.relationships?.shift?.data?.id
   const userId = application?.relationships?.user?.data?.id
   const scheduleId = application?.relationships?.schedule?.data?.id
+
+  const includedUser = JsonApi.findIncluded<UserItem>(
+    data?.included,
+    'user',
+    userId,
+  )
+  const includedSchedule = JsonApi.findIncluded<ScheduleItem>(
+    data?.included,
+    'schedule',
+    scheduleId,
+  )
+
+  const userName = includedUser?.attributes
+    ? User.fullName(includedUser.attributes)
+    : userId
+  const scheduleName = includedSchedule?.attributes?.name ?? scheduleId
 
   const handleStateTransition = (
     action: PatchApplicationsIdDo,
@@ -171,7 +182,7 @@ function ApplicationDetailPage() {
               {applicationId}
             </span>
             {state ? (
-              <Badge variant={stateBadgeVariant(state)}>
+              <Badge variant={Application.stateBadgeVariant(state)}>
                 {t(`states.${state}`)}
               </Badge>
             ) : null}
@@ -179,6 +190,23 @@ function ApplicationDetailPage() {
         </CardHeader>
         <CardContent>
           <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 text-sm">
+            <dt className="text-muted-foreground font-medium">
+              {t('application.schedule')}
+            </dt>
+            <dd>
+              {scheduleId ? (
+                <Link
+                  to="/schedules/$scheduleId"
+                  params={{ scheduleId }}
+                  className="hover:underline"
+                >
+                  {scheduleName}
+                </Link>
+              ) : (
+                '-'
+              )}
+            </dd>
+
             <dt className="text-muted-foreground font-medium">
               {t('application.shift')}
             </dt>
@@ -206,24 +234,7 @@ function ApplicationDetailPage() {
                   params={{ userId }}
                   className="hover:underline"
                 >
-                  {userId}
-                </Link>
-              ) : (
-                '-'
-              )}
-            </dd>
-
-            <dt className="text-muted-foreground font-medium">
-              {t('application.schedule')}
-            </dt>
-            <dd>
-              {scheduleId ? (
-                <Link
-                  to="/schedules/$scheduleId"
-                  params={{ scheduleId }}
-                  className="hover:underline"
-                >
-                  {scheduleId}
+                  {userName}
                 </Link>
               ) : (
                 '-'

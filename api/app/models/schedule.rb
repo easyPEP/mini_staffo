@@ -15,10 +15,10 @@ class Schedule < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name bop state published_at created_at updated_at]
+    %w[creator_id name bop state published_at created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[account creator shifts applications]
+    %w[creator shifts applications]
   end
 end

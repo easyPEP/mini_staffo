@@ -6,7 +6,14 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import type { ApplicationItem } from '@/generated/schemas'
+import type {
+  ApplicationItem,
+  GetApplicationsParams,
+  UserItem,
+} from '@/generated/schemas'
+import * as Application from '@/domains/application'
+import * as JsonApi from '@/domains/json-api'
+import * as User from '@/domains/user'
 import { useGetApplications } from '@/generated/api/applications/applications'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -24,25 +31,16 @@ export const Route = createFileRoute('/_authenticated/applications/')({
 
 const columnHelper = createColumnHelper<ApplicationItem>()
 
-function stateBadgeVariant(
-  state?: string,
-): 'default' | 'secondary' | 'destructive' | 'outline' {
-  switch (state) {
-    case 'assigned':
-      return 'default'
-    case 'applied':
-      return 'outline'
-    case 'cancelled':
-      return 'destructive'
-    default:
-      return 'secondary'
-  }
-}
-
 function ApplicationsPage() {
   const { t } = useTranslation()
-  const { data, isLoading } = useGetApplications()
+  const { data, isLoading } = useGetApplications({
+    include: 'user',
+  } as GetApplicationsParams)
   const applications = data?.data ?? []
+  const includedUsers = JsonApi.buildIncludedMap<UserItem>(
+    data?.included,
+    'user',
+  )
 
   const columns = [
     columnHelper.accessor((row) => row.id, {
@@ -81,16 +79,19 @@ function ApplicationsPage() {
       header: () => t('application.user'),
       cell: (info) => {
         const userId = info.getValue()
-        return userId ? (
+        if (!userId) return '-'
+        const user = includedUsers.get(userId)
+        const name = user?.attributes
+          ? User.fullName(user.attributes)
+          : userId
+        return (
           <Link
             to="/users/$userId"
             params={{ userId }}
             className="hover:underline"
           >
-            {userId}
+            {name}
           </Link>
-        ) : (
-          '-'
         )
       },
     }),
@@ -101,7 +102,7 @@ function ApplicationsPage() {
         const state = info.getValue()
         if (!state) return null
         return (
-          <Badge variant={stateBadgeVariant(state)}>
+          <Badge variant={Application.stateBadgeVariant(state)}>
             {t(`states.${state}`)}
           </Badge>
         )

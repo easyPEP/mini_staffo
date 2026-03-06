@@ -8,7 +8,11 @@ module SwaggerComponent
           "#{resource_name}_resource": {
             type: :object,
             properties: {
-              data: { '$ref': "#/components/schemas/#{resource_name}_item" }
+              data: { '$ref': "#/components/schemas/#{resource_name}_item" },
+              included: {
+                type: :array,
+                items: { '$ref': '#/components/schemas/jsonapi_included_item' }
+              }
             }
           },
           "#{resource_name}_item": base_resource.resource_schema

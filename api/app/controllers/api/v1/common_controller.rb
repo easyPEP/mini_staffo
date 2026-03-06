@@ -3,6 +3,7 @@
 module Api
   module V1
     class CommonController < BaseController
+      include JSONAPI::Fetching
       include JSONAPI::Pagination
       include JSONAPI::Filtering
       include JSONAPI::Deserialization
@@ -84,6 +85,14 @@ module Api
 
       def state_action
         params[:do]
+      end
+
+      def jsonapi_include
+        super & allowed_includes
+      end
+
+      def allowed_includes
+        serializer.relationships_to_serialize&.keys&.map(&:to_s) || []
       end
 
       def paginate(resources)

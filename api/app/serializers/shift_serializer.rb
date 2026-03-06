@@ -11,7 +11,6 @@ class ShiftSerializer < BaseSerializer
     object.ends_at&.iso8601
   end
 
-  belongs_to :account
   belongs_to :schedule
   belongs_to :creator, serializer: UserSerializer
   has_many :applications
