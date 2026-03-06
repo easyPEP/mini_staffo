@@ -15,6 +15,7 @@ RSpec.describe 'Users API', type: :request do
       tags 'Users'
       SwaggerComponent::RequestSetup.build(self)
       SwaggerComponent::Parameters::Pagination.apply(self)
+      SwaggerComponent::Parameters::Filtering.apply(self, attributes: User.ransackable_attributes)
 
       response '200', 'users found' do
         schema '$ref': '#/components/schemas/user_resources'

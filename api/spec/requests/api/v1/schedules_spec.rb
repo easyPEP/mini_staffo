@@ -15,6 +15,7 @@ RSpec.describe 'Schedules API', type: :request do
       tags 'Schedules'
       SwaggerComponent::RequestSetup.build(self)
       SwaggerComponent::Parameters::Pagination.apply(self)
+      SwaggerComponent::Parameters::Filtering.apply(self, attributes: Schedule.ransackable_attributes)
 
       response '200', 'schedules found' do
         schema '$ref': '#/components/schemas/schedule_resources'

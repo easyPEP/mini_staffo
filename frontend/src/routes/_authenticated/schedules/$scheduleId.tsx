@@ -9,6 +9,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@phosphor-icons/react'
+import type { GetShiftsParams } from '@/generated/schemas'
 import {
   getGetSchedulesIdQueryKey,
   getGetSchedulesQueryKey,
@@ -61,10 +62,10 @@ function ScheduleDetailPage() {
   const publishSchedule = usePutSchedulesIdPublish()
   const deleteSchedule = useDeleteSchedulesId()
 
-  const { data: shiftsData } = useGetShifts()
-  const scheduleShifts = (shiftsData?.data ?? []).filter(
-    (s) => s.relationships?.schedule?.data?.id === scheduleId,
-  )
+  const { data: shiftsData } = useGetShifts({
+    'filter[schedule_id_eq]': scheduleId,
+  } as GetShiftsParams)
+  const scheduleShifts = shiftsData?.data ?? []
 
   const schedule = data?.data
   const attrs = schedule?.attributes

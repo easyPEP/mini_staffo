@@ -9,6 +9,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@phosphor-icons/react'
+import type { GetApplicationsParams } from '@/generated/schemas'
 import {
   getGetShiftsIdQueryKey,
   getGetShiftsQueryKey,
@@ -80,10 +81,10 @@ function ShiftDetailPage() {
   const createApplication = usePostApplications()
   const deleteShift = useDeleteShiftsId()
 
-  const { data: applicationsData } = useGetApplications()
-  const shiftApplications = (applicationsData?.data ?? []).filter(
-    (a) => a.relationships?.shift?.data?.id === shiftId,
-  )
+  const { data: applicationsData } = useGetApplications({
+    'filter[shift_id_eq]': shiftId,
+  } as GetApplicationsParams)
+  const shiftApplications = applicationsData?.data ?? []
 
   const shift = data?.data
   const attrs = shift?.attributes

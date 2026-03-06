@@ -12,10 +12,10 @@ class Application < ApplicationRecord
   scope :assigned, -> { where(state: 'assigned') }
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[state cancel_reason created_at updated_at]
+    %w[shift_id user_id schedule_id creator_id state cancel_reason created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[account shift user schedule creator]
+    %w[shift user schedule creator]
   end
 end

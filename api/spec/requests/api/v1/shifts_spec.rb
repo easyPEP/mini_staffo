@@ -16,6 +16,7 @@ RSpec.describe 'Shifts API', type: :request do
       tags 'Shifts'
       SwaggerComponent::RequestSetup.build(self)
       SwaggerComponent::Parameters::Pagination.apply(self)
+      SwaggerComponent::Parameters::Filtering.apply(self, attributes: Shift.ransackable_attributes)
 
       response '200', 'shifts found' do
         schema '$ref': '#/components/schemas/shift_resources'

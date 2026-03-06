@@ -18,6 +18,6 @@ class User < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[account schedules applications]
+    %w[schedules applications]
   end
 end

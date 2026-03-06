@@ -18,6 +18,7 @@ RSpec.describe 'Applications API', type: :request do
       tags 'Applications'
       SwaggerComponent::RequestSetup.build(self)
       SwaggerComponent::Parameters::Pagination.apply(self)
+      SwaggerComponent::Parameters::Filtering.apply(self, attributes: Application.ransackable_attributes)
 
       response '200', 'applications found' do
         schema '$ref': '#/components/schemas/application_resources'

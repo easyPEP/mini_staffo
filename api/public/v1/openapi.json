@@ -113,6 +113,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "filter[{attribute}_{predicate}]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by attribute using Ransack predicates.<br><br>**Available attributes:**<br>`shift_id`, `user_id`, `schedule_id`, `creator_id`, `state`, `cancel_reason`, `created_at`, `updated_at`<br><br>**Common predicates:**<br>`eq`, `not_eq`, `matches`, `lt`, `lteq`, `gt`, `gteq`, `in`, `not_in`, `cont`, `start`, `end`, `null`, `not_null`<br><br>[Full list of predicates](https://activerecord-hackery.github.io/ransack/getting-started/using-predicates/)"
           }
         ],
         "responses": {
@@ -320,6 +329,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "filter[{attribute}_{predicate}]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by attribute using Ransack predicates.<br><br>**Available attributes:**<br>`creator_id`, `name`, `bop`, `state`, `published_at`, `created_at`, `updated_at`<br><br>**Common predicates:**<br>`eq`, `not_eq`, `matches`, `lt`, `lteq`, `gt`, `gteq`, `in`, `not_in`, `cont`, `start`, `end`, `null`, `not_null`<br><br>[Full list of predicates](https://activerecord-hackery.github.io/ransack/getting-started/using-predicates/)"
           }
         ],
         "responses": {
@@ -553,6 +571,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "filter[{attribute}_{predicate}]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by attribute using Ransack predicates.<br><br>**Available attributes:**<br>`schedule_id`, `creator_id`, `starts_at`, `ends_at`, `desired_coverage`, `note`, `published_at`, `created_at`, `updated_at`<br><br>**Common predicates:**<br>`eq`, `not_eq`, `matches`, `lt`, `lteq`, `gt`, `gteq`, `in`, `not_in`, `cont`, `start`, `end`, `null`, `not_null`<br><br>[Full list of predicates](https://activerecord-hackery.github.io/ransack/getting-started/using-predicates/)"
           }
         ],
         "responses": {
@@ -743,6 +770,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "filter[{attribute}_{predicate}]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by attribute using Ransack predicates.<br><br>**Available attributes:**<br>`email`, `first_name`, `last_name`, `role`, `locked_at`, `created_at`, `updated_at`<br><br>**Common predicates:**<br>`eq`, `not_eq`, `matches`, `lt`, `lteq`, `gt`, `gteq`, `in`, `not_in`, `cont`, `start`, `end`, `null`, `not_null`<br><br>[Full list of predicates](https://activerecord-hackery.github.io/ransack/getting-started/using-predicates/)"
           }
         ],
         "responses": {
