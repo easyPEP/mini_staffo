@@ -7,6 +7,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import type { GetShiftsParams, ScheduleItem, ShiftItem } from '@/generated/schemas'
+import * as JsonApi from '@/domains/json-api'
 import { useGetShifts } from '@/generated/api/shifts/shifts'
 import {
   Table,
@@ -29,10 +30,9 @@ function ShiftsPage() {
     include: 'schedule',
   } as GetShiftsParams)
   const shifts = data?.data ?? []
-  const includedSchedules = new Map(
-    data?.included
-      ?.filter((r) => r.type === 'schedule')
-      .map((s) => [s.id, s as unknown as ScheduleItem]),
+  const includedSchedules = JsonApi.buildIncludedMap<ScheduleItem>(
+    data?.included,
+    'schedule',
   )
 
   const columns = [

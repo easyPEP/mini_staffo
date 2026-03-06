@@ -10,6 +10,9 @@ import type {
   UserItem,
 } from '@/generated/schemas'
 import type { PatchApplicationsIdDo } from '@/generated/schemas/patchApplicationsIdDo'
+import * as Application from '@/domains/application'
+import * as JsonApi from '@/domains/json-api'
+import * as User from '@/domains/user'
 import {
   getGetApplicationsIdQueryKey,
   getGetApplicationsQueryKey,
@@ -38,21 +41,6 @@ export const Route = createFileRoute(
   component: ApplicationDetailPage,
 })
 
-function stateBadgeVariant(
-  state?: string,
-): 'default' | 'secondary' | 'destructive' | 'outline' {
-  switch (state) {
-    case 'assigned':
-      return 'default'
-    case 'applied':
-      return 'outline'
-    case 'cancelled':
-      return 'destructive'
-    default:
-      return 'secondary'
-  }
-}
-
 function ApplicationDetailPage() {
   const { t } = useTranslation()
   const { applicationId } = Route.useParams()
@@ -79,17 +67,19 @@ function ApplicationDetailPage() {
   const userId = application?.relationships?.user?.data?.id
   const scheduleId = application?.relationships?.schedule?.data?.id
 
-  const includedUser = data?.included?.find(
-    (r) => r.type === 'user' && r.id === userId,
-  ) as unknown as UserItem | undefined
-  const includedSchedule = data?.included?.find(
-    (r) => r.type === 'schedule' && r.id === scheduleId,
-  ) as unknown as ScheduleItem | undefined
+  const includedUser = JsonApi.findIncluded<UserItem>(
+    data?.included,
+    'user',
+    userId,
+  )
+  const includedSchedule = JsonApi.findIncluded<ScheduleItem>(
+    data?.included,
+    'schedule',
+    scheduleId,
+  )
 
   const userName = includedUser?.attributes
-    ? [includedUser.attributes.first_name, includedUser.attributes.last_name]
-        .filter(Boolean)
-        .join(' ')
+    ? User.fullName(includedUser.attributes)
     : userId
   const scheduleName = includedSchedule?.attributes?.name ?? scheduleId
 
@@ -192,7 +182,7 @@ function ApplicationDetailPage() {
               {applicationId}
             </span>
             {state ? (
-              <Badge variant={stateBadgeVariant(state)}>
+              <Badge variant={Application.stateBadgeVariant(state)}>
                 {t(`states.${state}`)}
               </Badge>
             ) : null}

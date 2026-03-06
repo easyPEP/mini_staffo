@@ -11,6 +11,9 @@ import type {
   GetApplicationsParams,
   UserItem,
 } from '@/generated/schemas'
+import * as Application from '@/domains/application'
+import * as JsonApi from '@/domains/json-api'
+import * as User from '@/domains/user'
 import { useGetApplications } from '@/generated/api/applications/applications'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -28,31 +31,15 @@ export const Route = createFileRoute('/_authenticated/applications/')({
 
 const columnHelper = createColumnHelper<ApplicationItem>()
 
-function stateBadgeVariant(
-  state?: string,
-): 'default' | 'secondary' | 'destructive' | 'outline' {
-  switch (state) {
-    case 'assigned':
-      return 'default'
-    case 'applied':
-      return 'outline'
-    case 'cancelled':
-      return 'destructive'
-    default:
-      return 'secondary'
-  }
-}
-
 function ApplicationsPage() {
   const { t } = useTranslation()
   const { data, isLoading } = useGetApplications({
     include: 'user',
   } as GetApplicationsParams)
   const applications = data?.data ?? []
-  const includedUsers = new Map(
-    data?.included
-      ?.filter((r) => r.type === 'user')
-      .map((u) => [u.id, u as unknown as UserItem]),
+  const includedUsers = JsonApi.buildIncludedMap<UserItem>(
+    data?.included,
+    'user',
   )
 
   const columns = [
@@ -95,9 +82,7 @@ function ApplicationsPage() {
         if (!userId) return '-'
         const user = includedUsers.get(userId)
         const name = user?.attributes
-          ? [user.attributes.first_name, user.attributes.last_name]
-              .filter(Boolean)
-              .join(' ')
+          ? User.fullName(user.attributes)
           : userId
         return (
           <Link
@@ -117,7 +102,7 @@ function ApplicationsPage() {
         const state = info.getValue()
         if (!state) return null
         return (
-          <Badge variant={stateBadgeVariant(state)}>
+          <Badge variant={Application.stateBadgeVariant(state)}>
             {t(`states.${state}`)}
           </Badge>
         )

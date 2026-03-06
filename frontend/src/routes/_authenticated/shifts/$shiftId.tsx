@@ -15,6 +15,9 @@ import type {
   ScheduleItem,
   UserItem,
 } from '@/generated/schemas'
+import * as Application from '@/domains/application'
+import * as JsonApi from '@/domains/json-api'
+import * as User from '@/domains/user'
 import {
   getGetShiftsIdQueryKey,
   getGetShiftsQueryKey,
@@ -53,21 +56,6 @@ export const Route = createFileRoute('/_authenticated/shifts/$shiftId')({
   component: ShiftDetailPage,
 })
 
-function stateBadgeVariant(
-  state?: string,
-): 'default' | 'secondary' | 'destructive' | 'outline' {
-  switch (state) {
-    case 'assigned':
-      return 'default'
-    case 'applied':
-      return 'outline'
-    case 'cancelled':
-      return 'destructive'
-    default:
-      return 'secondary'
-  }
-}
-
 function ShiftDetailPage() {
   const { t } = useTranslation()
   const { shiftId } = Route.useParams()
@@ -93,18 +81,19 @@ function ShiftDetailPage() {
     include: 'user',
   } as GetApplicationsParams)
   const shiftApplications = applicationsData?.data ?? []
-  const includedUsers = new Map(
-    applicationsData?.included
-      ?.filter((r) => r.type === 'user')
-      .map((u) => [u.id, u as unknown as UserItem]),
+  const includedUsers = JsonApi.buildIncludedMap<UserItem>(
+    applicationsData?.included,
+    'user',
   )
 
   const shift = data?.data
   const attrs = shift?.attributes
   const scheduleId = shift?.relationships?.schedule?.data?.id
-  const includedSchedule = data?.included?.find(
-    (r) => r.type === 'schedule' && r.id === scheduleId,
-  ) as unknown as ScheduleItem | undefined
+  const includedSchedule = JsonApi.findIncluded<ScheduleItem>(
+    data?.included,
+    'schedule',
+    scheduleId,
+  )
   const scheduleName = includedSchedule?.attributes?.name ?? scheduleId
 
   const assignedCount = shiftApplications.filter(
@@ -315,12 +304,9 @@ function ShiftDetailPage() {
                     {(() => {
                       const userId = app.relationships?.user?.data?.id
                       const user = userId ? includedUsers.get(userId) : undefined
-                      const name =
-                        user?.attributes
-                          ? [user.attributes.first_name, user.attributes.last_name]
-                              .filter(Boolean)
-                              .join(' ')
-                          : (userId ?? '-')
+                      const name = user?.attributes
+                        ? User.fullName(user.attributes)
+                        : (userId ?? '-')
                       return (
                         <Link
                           to="/users/$userId"
@@ -334,7 +320,7 @@ function ShiftDetailPage() {
                   </TableCell>
                   <TableCell>
                     {app.attributes?.state ? (
-                      <Badge variant={stateBadgeVariant(app.attributes.state)}>
+                      <Badge variant={Application.stateBadgeVariant(app.attributes.state)}>
                         {t(`states.${app.attributes.state}`)}
                       </Badge>
                     ) : null}
