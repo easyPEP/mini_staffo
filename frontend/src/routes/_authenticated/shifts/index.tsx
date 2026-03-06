@@ -6,7 +6,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import type { ShiftItem } from '@/generated/schemas'
+import type { GetShiftsParams, ScheduleItem, ShiftItem } from '@/generated/schemas'
 import { useGetShifts } from '@/generated/api/shifts/shifts'
 import {
   Table,
@@ -25,8 +25,15 @@ const columnHelper = createColumnHelper<ShiftItem>()
 
 function ShiftsPage() {
   const { t } = useTranslation()
-  const { data, isLoading } = useGetShifts()
+  const { data, isLoading } = useGetShifts({
+    include: 'schedule',
+  } as GetShiftsParams)
   const shifts = data?.data ?? []
+  const includedSchedules = new Map(
+    data?.included
+      ?.filter((r) => r.type === 'schedule')
+      .map((s) => [s.id, s as unknown as ScheduleItem]),
+  )
 
   const columns = [
     columnHelper.accessor((row) => row.id, {
@@ -47,16 +54,16 @@ function ShiftsPage() {
       header: () => t('shift.schedule'),
       cell: (info) => {
         const scheduleId = info.getValue()
-        return scheduleId ? (
+        if (!scheduleId) return '-'
+        const schedule = includedSchedules.get(scheduleId)
+        return (
           <Link
             to="/schedules/$scheduleId"
             params={{ scheduleId }}
             className="hover:underline"
           >
-            {scheduleId}
+            {schedule?.attributes?.name ?? scheduleId}
           </Link>
-        ) : (
-          '-'
         )
       },
     }),

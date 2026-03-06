@@ -34,11 +34,17 @@ module Api
       end
 
       def render_resource(resource, status: :ok)
-        render json: serializer.new(resource), status: status
+        render json: serializer.new(resource, serializer_options), status: status
       end
 
       def render_resources(resources)
-        render json: serializer.new(resources, is_collection: true, meta: pagination_meta(resources))
+        render json: serializer.new(resources, serializer_options.merge(is_collection: true, meta: pagination_meta(resources)))
+      end
+
+      def serializer_options
+        options = {}
+        options[:include] = jsonapi_include if respond_to?(:jsonapi_include, true) && jsonapi_include.present?
+        options
       end
 
       def save_and_render(decorator, status: :ok)

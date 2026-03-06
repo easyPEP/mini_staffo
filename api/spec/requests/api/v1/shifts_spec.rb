@@ -17,6 +17,7 @@ RSpec.describe 'Shifts API', type: :request do
       SwaggerComponent::RequestSetup.build(self)
       SwaggerComponent::Parameters::Pagination.apply(self)
       SwaggerComponent::Parameters::Filtering.apply(self, attributes: Shift.ransackable_attributes)
+      SwaggerComponent::Parameters::Including.apply(self, relationships: %w[schedule creator applications])
 
       response '200', 'shifts found' do
         schema '$ref': '#/components/schemas/shift_resources'
@@ -95,6 +96,7 @@ RSpec.describe 'Shifts API', type: :request do
     get 'Shows a shift' do
       tags 'Shifts'
       SwaggerComponent::RequestSetup.build(self)
+      SwaggerComponent::Parameters::Including.apply(self, relationships: %w[schedule creator applications])
 
       response '200', 'shift found' do
         schema '$ref': '#/components/schemas/shift_resource'

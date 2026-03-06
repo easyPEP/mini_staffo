@@ -4,6 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { ArrowLeftIcon, TrashIcon } from '@phosphor-icons/react'
+import type {
+  GetApplicationsIdParams,
+  ScheduleItem,
+  UserItem,
+} from '@/generated/schemas'
 import type { PatchApplicationsIdDo } from '@/generated/schemas/patchApplicationsIdDo'
 import {
   getGetApplicationsIdQueryKey,
@@ -60,7 +65,9 @@ function ApplicationDetailPage() {
   const [cancelReason, setCancelReason] = useState('')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
-  const { data, isLoading } = useGetApplicationsId(applicationId)
+  const { data, isLoading } = useGetApplicationsId(applicationId, {
+    include: 'user,schedule',
+  } as GetApplicationsIdParams)
   const patchApplication = usePatchApplicationsId()
   const deleteApplication = useDeleteApplicationsId()
 
@@ -71,6 +78,20 @@ function ApplicationDetailPage() {
   const shiftId = application?.relationships?.shift?.data?.id
   const userId = application?.relationships?.user?.data?.id
   const scheduleId = application?.relationships?.schedule?.data?.id
+
+  const includedUser = data?.included?.find(
+    (r) => r.type === 'user' && r.id === userId,
+  ) as unknown as UserItem | undefined
+  const includedSchedule = data?.included?.find(
+    (r) => r.type === 'schedule' && r.id === scheduleId,
+  ) as unknown as ScheduleItem | undefined
+
+  const userName = includedUser?.attributes
+    ? [includedUser.attributes.first_name, includedUser.attributes.last_name]
+        .filter(Boolean)
+        .join(' ')
+    : userId
+  const scheduleName = includedSchedule?.attributes?.name ?? scheduleId
 
   const handleStateTransition = (
     action: PatchApplicationsIdDo,
@@ -180,6 +201,23 @@ function ApplicationDetailPage() {
         <CardContent>
           <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 text-sm">
             <dt className="text-muted-foreground font-medium">
+              {t('application.schedule')}
+            </dt>
+            <dd>
+              {scheduleId ? (
+                <Link
+                  to="/schedules/$scheduleId"
+                  params={{ scheduleId }}
+                  className="hover:underline"
+                >
+                  {scheduleName}
+                </Link>
+              ) : (
+                '-'
+              )}
+            </dd>
+
+            <dt className="text-muted-foreground font-medium">
               {t('application.shift')}
             </dt>
             <dd>
@@ -206,24 +244,7 @@ function ApplicationDetailPage() {
                   params={{ userId }}
                   className="hover:underline"
                 >
-                  {userId}
-                </Link>
-              ) : (
-                '-'
-              )}
-            </dd>
-
-            <dt className="text-muted-foreground font-medium">
-              {t('application.schedule')}
-            </dt>
-            <dd>
-              {scheduleId ? (
-                <Link
-                  to="/schedules/$scheduleId"
-                  params={{ scheduleId }}
-                  className="hover:underline"
-                >
-                  {scheduleId}
+                  {userName}
                 </Link>
               ) : (
                 '-'

@@ -6,7 +6,11 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import type { ApplicationItem } from '@/generated/schemas'
+import type {
+  ApplicationItem,
+  GetApplicationsParams,
+  UserItem,
+} from '@/generated/schemas'
 import { useGetApplications } from '@/generated/api/applications/applications'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -41,8 +45,15 @@ function stateBadgeVariant(
 
 function ApplicationsPage() {
   const { t } = useTranslation()
-  const { data, isLoading } = useGetApplications()
+  const { data, isLoading } = useGetApplications({
+    include: 'user',
+  } as GetApplicationsParams)
   const applications = data?.data ?? []
+  const includedUsers = new Map(
+    data?.included
+      ?.filter((r) => r.type === 'user')
+      .map((u) => [u.id, u as unknown as UserItem]),
+  )
 
   const columns = [
     columnHelper.accessor((row) => row.id, {
@@ -81,16 +92,21 @@ function ApplicationsPage() {
       header: () => t('application.user'),
       cell: (info) => {
         const userId = info.getValue()
-        return userId ? (
+        if (!userId) return '-'
+        const user = includedUsers.get(userId)
+        const name = user?.attributes
+          ? [user.attributes.first_name, user.attributes.last_name]
+              .filter(Boolean)
+              .join(' ')
+          : userId
+        return (
           <Link
             to="/users/$userId"
             params={{ userId }}
             className="hover:underline"
           >
-            {userId}
+            {name}
           </Link>
-        ) : (
-          '-'
         )
       },
     }),

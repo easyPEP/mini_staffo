@@ -2,7 +2,7 @@
 
 module SwaggerComponent
   module BaseSchema
-    def self.definitions
+    def self.definitions # rubocop:disable Metrics/MethodLength
       {
         jsonapi_error: {
           type: :object,
@@ -42,6 +42,15 @@ module SwaggerComponent
           properties: {
             total: { type: :integer },
             pages: { type: :integer }
+          }
+        },
+        jsonapi_included_item: {
+          type: :object,
+          properties: {
+            id: { type: :string },
+            type: { type: :string },
+            attributes: { type: :object, additionalProperties: true },
+            relationships: { type: :object, additionalProperties: true }
           }
         },
         jsonapi_relationship: {

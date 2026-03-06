@@ -15,7 +15,6 @@ class ScheduleSerializer < BaseSerializer
     object.published_at&.iso8601
   end
 
-  belongs_to :account
   belongs_to :creator, serializer: UserSerializer
   has_many :shifts
 end

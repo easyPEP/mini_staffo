@@ -9,7 +9,12 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@phosphor-icons/react'
-import type { GetApplicationsParams } from '@/generated/schemas'
+import type {
+  GetApplicationsParams,
+  GetShiftsIdParams,
+  ScheduleItem,
+  UserItem,
+} from '@/generated/schemas'
 import {
   getGetShiftsIdQueryKey,
   getGetShiftsQueryKey,
@@ -77,18 +82,30 @@ function ShiftDetailPage() {
   const [createApplicationDialogOpen, setCreateApplicationDialogOpen] =
     useState(false)
 
-  const { data, isLoading } = useGetShiftsId(shiftId)
+  const { data, isLoading } = useGetShiftsId(shiftId, {
+    include: 'schedule',
+  } as GetShiftsIdParams)
   const createApplication = usePostApplications()
   const deleteShift = useDeleteShiftsId()
 
   const { data: applicationsData } = useGetApplications({
     'filter[shift_id_eq]': shiftId,
+    include: 'user',
   } as GetApplicationsParams)
   const shiftApplications = applicationsData?.data ?? []
+  const includedUsers = new Map(
+    applicationsData?.included
+      ?.filter((r) => r.type === 'user')
+      .map((u) => [u.id, u as unknown as UserItem]),
+  )
 
   const shift = data?.data
   const attrs = shift?.attributes
   const scheduleId = shift?.relationships?.schedule?.data?.id
+  const includedSchedule = data?.included?.find(
+    (r) => r.type === 'schedule' && r.id === scheduleId,
+  ) as unknown as ScheduleItem | undefined
+  const scheduleName = includedSchedule?.attributes?.name ?? scheduleId
 
   const assignedCount = shiftApplications.filter(
     (a) => a.attributes?.state === 'assigned',
@@ -220,7 +237,7 @@ function ShiftDetailPage() {
                   params={{ scheduleId }}
                   className="hover:underline"
                 >
-                  {scheduleId}
+                  {scheduleName}
                 </Link>
               ) : (
                 '-'
@@ -295,15 +312,25 @@ function ShiftDetailPage() {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <Link
-                      to="/users/$userId"
-                      params={{
-                        userId: app.relationships?.user?.data?.id ?? '',
-                      }}
-                      className="hover:underline"
-                    >
-                      {app.relationships?.user?.data?.id ?? '-'}
-                    </Link>
+                    {(() => {
+                      const userId = app.relationships?.user?.data?.id
+                      const user = userId ? includedUsers.get(userId) : undefined
+                      const name =
+                        user?.attributes
+                          ? [user.attributes.first_name, user.attributes.last_name]
+                              .filter(Boolean)
+                              .join(' ')
+                          : (userId ?? '-')
+                      return (
+                        <Link
+                          to="/users/$userId"
+                          params={{ userId: userId ?? '' }}
+                          className="hover:underline"
+                        >
+                          {name}
+                        </Link>
+                      )
+                    })()}
                   </TableCell>
                   <TableCell>
                     {app.attributes?.state ? (

@@ -6,6 +6,4 @@ class UserSerializer < BaseSerializer
   attribute :locked_at do |object|
     object.locked_at&.iso8601
   end
-
-  belongs_to :account
 end

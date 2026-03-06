@@ -14,6 +14,7 @@ RSpec.describe 'Accounts API', type: :request do
     get 'Shows the account' do
       tags 'Accounts'
       SwaggerComponent::RequestSetup.build(self)
+      SwaggerComponent::Parameters::Including.apply(self, relationships: %w[users schedules])
 
       response '200', 'account found' do
         schema '$ref': '#/components/schemas/account_resource'
